@@ -1,0 +1,54 @@
+noStroke();
+var drawHead = function(headX,headY)
+{
+    //head
+    fill(217, 180, 139); //skin tone
+    ellipse(headX+100,headY+100,60,80);
+    //ears
+    ellipse(headX+75,headY+100,20,20);
+    ellipse(headX+125,headY+100,20,20);
+    //neck
+    rect(headX+87,headY+130,25,20);
+};
+var drawFace = function(faceX,faceY)
+{
+    //eyes
+    fill(255,255,255);
+    ellipse(faceX+87,faceY+100,15,10);
+    ellipse(faceX+111,faceY+100,15,10);
+    fill(74, 64, 5); //iris color
+    ellipse(faceX+87,faceY+100,10,10);
+    ellipse(faceX+111,faceY+100,10,10);
+    //mouth
+    fill(0,0,0);
+    rect(faceX+90,faceY+120,20,1);
+};
+var drawTop = function(topX,topY)
+{
+    //hair
+    fill(38, 26, 5);
+    rect(topX+71,topY+72,5,20);
+    rect(topX+123,topY+72,5,20);
+    //hat
+    fill(0, 0, 0); //hat color
+    ellipse(topX+100,topY+73,58,35);
+    ellipse(topX+100,topY+78,60,27);
+    fill(255, 255, 255); //for hat 
+    ellipse(topX+100,topY+66,10,10);
+};
+var drawBody = function(bodyX,bodyY)
+{
+    //shirt
+    fill(8, 5, 79); //navy blue for shirt
+    rect(bodyX+70,bodyY+144,60,40);
+    fill(255, 255, 255);//text color
+    textSize(22);
+    text("BD",bodyX+84,bodyY+168);
+};
+var drawBitmoji = function(bitmojiX,bitmojiY){
+    drawHead(bitmojiX,bitmojiY);
+    drawFace(bitmojiX,bitmojiY);
+    drawTop(bitmojiX,bitmojiY);
+    drawBody(bitmojiX,bitmojiY);
+    
+};
