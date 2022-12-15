@@ -1,3 +1,5 @@
+var player1hp =5;
+var player2hp =5;
 //scenery draw functions
 var drawMountains = function(){
 fill(171, 169, 169);
@@ -64,30 +66,48 @@ background(198, 247, 245);
 drawMountains();
 drawSnow();
 drawSun();
+//display HUD
+textAlign(CENTER);
+textSize(15);
+text("Player 1",sprite1.x + 20,sprite1.y - 10);
+text("Player 2",sprite2.x + 20,sprite2.y - 10);
+fill(0, 0, 0);
+textSize(20);
+text("Player 1 Health",83,26);
+text("Player 2 Health",325,26);
+//show player health
+for (var i=0; i<player1hp; i++)
+{
+    image(getImage("cute/Heart"), 10 + i*30,30,25,25);
+}
+for (var j=0; j<player1hp; j++)
+{
+    image(getImage("cute/Heart"), 250 + j*30,30,25,25);
+}
 
 //player 1 movement keys
-if (keyIsPressed && key.code === 87) //w key
+if (keyIsPressed && keyCode === 87) //w key
     {sprite1.jump();} 
 else {sprite1.fall();}
-if (keyIsPressed && key.code === 65) //a key
+if (keyIsPressed && keyCode === 65) //a key
     {sprite1.moveLeft();}
 else {sprite1.fall();}
-if (keyIsPressed && key.code === 68) //d key
+if (keyIsPressed && keyCode === 68) //d key
     {sprite1.moveRight();}
 else {sprite1.fall();}
 
 //player 2 movement keys
-if (keyIsPressed && key.code === 38) //up arrow
+if (keyIsPressed && keyCode === 38) //up arrow
     {sprite2.jump();} 
 else {sprite2.fall();}
-if (keyIsPressed && key.code === 37) //left arrow
+if (keyIsPressed && keyCode === 37) //left arrow
     {sprite2.moveLeft();}
 else {sprite2.fall();}
-if (keyIsPressed && key.code === 39) //right arrow
+if (keyIsPressed && keyCode === 39) //right arrow
     {sprite2.moveRight();}
 else {sprite2.fall();}
 
+//draws sprites
     sprite1.draw();
     sprite2.draw();
 };
-
