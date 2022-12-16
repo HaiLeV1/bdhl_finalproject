@@ -1,3 +1,13 @@
+/*
+things to fix/add:
+- both movement at same time
+- code for bullet and trajectory
+- code shoot prototype function
+- code actions when hp hits 0 (new scene), declares winner
+- add initial start screen
+- constrain sprites movement to respective sides
+*/
+//global variables
 var player1hp =5;
 var player2hp =5;
 //scenery draw functions
@@ -32,32 +42,51 @@ var Sprite = function(x, y) {
 };
 
 Sprite.prototype.draw = function() {
-    this.y = constrain(this.y,0 ,height-50);
-    this.x = constrain(this.x,0,400);
+    this.y = constrain(this.y, 0,height-50);
+    this.x = constrain(this.x,0,365);
     image(this.img, this.x, this.y, 40, 40);
 };
 
 Sprite.prototype.moveLeft = function(){
     this.img = getImage("creatures/Hopper-Happy");
-    this.x -= 5;
+    this.x -= 2;
 };
 
 Sprite.prototype.moveRight = function(){
     this.img = getImage("creatures/Hopper-Happy");
-    this.x += 5;
+    this.x += 2;
 };
 
 Sprite.prototype.jump = function() {
     this.img = getImage("creatures/Hopper-Happy");
-    this.y -= 5;
+    this.y -= 2;
 };
 
 Sprite.prototype.fall = function() {
     this.img = getImage("creatures/Hopper-Happy");
-    this.y += 5;
+    this.y += 2;
 };
-var sprite1 = new Sprite(10, 300);
-var sprite2 = new Sprite(350,300);
+
+var sprite1 = new Sprite(0, 300);
+var sprite2 = new Sprite(365,300);
+
+var drawSprite1weapon = function(){
+fill(0, 0, 0);
+rect(sprite1.x+35,sprite1.y+15,20,5);
+rect(sprite1.x+35,sprite1.y+20,5,5);
+};
+
+var drawSprite2weapon = function(){
+fill(0, 0, 0);
+rect(sprite2.x-15,sprite2.y+15,20,5);
+rect(sprite2.x,sprite2.y+20,5,5);
+};
+
+/*Sprite.prototype.shoot = function(){
+fill(247, 243, 136);
+ellipse(this.x,this.y,5,5);
+};
+*/
 
 draw = function() {
 //draw map scenery
@@ -76,38 +105,39 @@ textSize(20);
 text("Player 1 Health",83,26);
 text("Player 2 Health",325,26);
 //show player health
-for (var i=0; i<player1hp; i++)
-{
-    image(getImage("cute/Heart"), 10 + i*30,30,25,25);
+for (var i=0; i<player1hp; i++){
+image(getImage("cute/Heart"), 10 + i*30,30,25,25);
 }
-for (var j=0; j<player1hp; j++)
-{
-    image(getImage("cute/Heart"), 250 + j*30,30,25,25);
+for (var j=0; j<player2hp; j++){
+image(getImage("cute/Heart"), 250 + j*30,30,25,25);
 }
 
 //player 1 movement keys
-if (keyIsPressed && keyCode === 87) //w key
+if (keyPressed && keyCode === 87) //w key
     {sprite1.jump();} 
 else {sprite1.fall();}
-if (keyIsPressed && keyCode === 65) //a key
+if (keyPressed && keyCode === 65) //a key
     {sprite1.moveLeft();}
 else {sprite1.fall();}
-if (keyIsPressed && keyCode === 68) //d key
+if (keyPressed && keyCode === 68) //d key
     {sprite1.moveRight();}
 else {sprite1.fall();}
 
 //player 2 movement keys
-if (keyIsPressed && keyCode === 38) //up arrow
+if (keyPressed && keyCode === 73) //i arrow
     {sprite2.jump();} 
 else {sprite2.fall();}
-if (keyIsPressed && keyCode === 37) //left arrow
+if (keyPressed && keyCode === 74) //j arrow
     {sprite2.moveLeft();}
 else {sprite2.fall();}
-if (keyIsPressed && keyCode === 39) //right arrow
+if (keyPressed && keyCode === 76) //l arrow
     {sprite2.moveRight();}
 else {sprite2.fall();}
 
-//draws sprites
+//draws sprites and weapons
     sprite1.draw();
+    drawSprite1weapon();
     sprite2.draw();
+    drawSprite2weapon();
 };
+
