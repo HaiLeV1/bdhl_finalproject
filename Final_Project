@@ -1,0 +1,520 @@
+// Global variables and functions
+// { 
+var currentScene =0; // Splash Screen = 0 / Game = 1
+
+var player1 = {
+    health: 5,
+    position:round(random(0.4,3.4)),
+    yCord:0
+}; //Player 1 & its objects
+
+var player2 = {
+    health:5,
+    position:round(random(0.4,3.4)),
+    yCord:0
+}; //Player 2 & its objects
+
+var bullets = [];
+var bullSpd = 3;
+var moveBull = function(bull)
+{
+    //this function takes in a bullet object and moves it by updating the .x property with      the .speed
+    bull.x+=bull.speed;
+    
+    // hit registration
+    if (bull.x > 355 && bull.x < 390 && player2.yCord === bull.y-29)
+        {
+            bull.x = 200;
+            bull.y=-5;
+            bull.speed = 0;
+            player2.health--;
+        }
+    else if (bull.x > 405)
+    {
+        bull.x=500;
+        bull.speed=0;
+    }
+    
+    if (bull.x < 35 && bull.x > 10 && player1.yCord === bull.y-29)
+        {
+            bull.x = 200;
+            bull.y=-5;
+            bull.speed = 0;
+            player1.health--;
+        }
+    else if (bull.x < -5)
+    {
+        bull.x=500;
+        bull.speed=0;
+    }
+};
+
+var healthBar = function()
+{
+    for (var i=0; i<player1.health; i++) // shows player 1's health
+    {
+    image(getImage("cute/Heart"), 1 + i*30,0,25,25);
+    }
+    
+    for (var j=0; j<player2.health; j++) // shows player 2's health
+    {
+    image(getImage("cute/Heart"), 251 + j*30,0,25,25);
+    }
+};
+//}
+
+// Functions that draw the sprite
+//{
+// Draws player 1
+{
+var drawSprite1 = function(y)
+{ //draws the stickman sprite
+    noFill();
+    stroke(255, 185, 0);
+    strokeWeight(3);
+    ellipse(15,y+15,25,25); //head
+    line(15,y+28,15,y+50); //body
+    line(16,y+32,32,y+32); //gun arm
+    line(16,y+32,3,y+45); //other arm
+    line(16,y+50,22,y+70); //leg
+    line(15,y+50,9,y+70); //other leg
+};
+
+var drawGun1 = function(y)
+{ //draws the gun sprite
+    noStroke();
+    fill(0, 0, 0);
+    rect(32,y+28,3,10); //gun handle
+    fill(120, 120, 120);
+    rect(33,y+26,15,6); //gun barrel
+};
+
+var drawPlayer1 = function(y)
+{
+    drawSprite1(y); //draws the sprite
+    drawGun1(y); //draws the gun
+};
+}
+
+// Draws player 2
+{
+var drawSprite2 = function(y)
+{ //draws the stickman sprite
+    noFill();
+    stroke(255, 185, 0);
+    strokeWeight(3);
+    ellipse(375,y+15,25,25); //head
+    line(375,y+28,375,y+50); //body
+    line(376,y+32,358,y+32); //gun arm
+    line(376,y+32,387,y+45); //other arm
+    line(376,y+50,382,y+70); //leg
+    line(375,y+50,367,y+70); //other leg
+};
+
+var drawGun2 = function(y)
+{ //draws the gun sprite
+    noStroke();
+    fill(0, 0, 0);
+    rect(356,y+28,3,10); //gun handle
+    fill(120, 120, 120);
+    rect(342,y+26,15,6); //gun barrel
+};
+
+var drawPlayer2 = function(y)
+{
+    drawSprite2(y); //draws the sprite
+    drawGun2(y); //draws the gun
+};
+}
+//}
+
+// Functions that draw the map
+//{
+
+var drawMountains = function()
+{
+fill(171, 169, 169);
+triangle(-21,385,50,128,105,385);
+triangle(155,385,224,93,281,385);
+triangle(116,385,169,122,220,385);
+triangle(178,385,111,189,81,385);
+triangle(233,385,298,116,444,385);
+triangle(302,385,355,72,539,385);
+};
+
+var drawSnow = function()
+{
+fill(255, 255, 255);
+rect(0,385,width,30);
+triangle(62,182,50,128,35,182);
+triangle(205,170,224,93,240,170);
+triangle(180,176,169,122,158,176);
+triangle(104,234,111,189,127,234);
+triangle(283,177,298,116,331,177);
+triangle(345,128,355,71,388,128);
+};
+
+var drawSun = function()
+{
+fill(255, 255, 0);
+ellipse(0,0,100,100);
+};
+
+var drawBackground = function()
+{
+    background(165, 245, 255);
+    drawMountains();
+    drawSnow();
+    drawSun();
+};
+
+var drawPlatforms = function()
+{
+    noStroke();
+    fill(255, 0, 0);
+    for(var i = 0; i<4; i++)
+    {
+        rect(0,(i*100)+90,50,10);
+    }
+    for(var i = 0; i<4; i++)
+    {
+        rect(350,(i*100)+90,50,10);
+    }
+};
+//}
+
+// Functions that get the sprites to move
+//{
+var changePosition1 = function(position)
+{
+    if(position === 0)
+    {
+        player1.yCord = 20;
+    }
+    
+    if(position === 1)
+    {
+        player1.yCord = 120;
+    }
+    
+    if(position === 2)
+    {
+        player1.yCord = 220;
+    }
+    
+    if(position === 3)
+    {
+        player1.yCord = 320;
+    }
+};
+
+var changePosition2 = function(position)
+{
+    if(position === 0)
+    {
+        player2.yCord = 20;
+    }
+    
+    if(position === 1)
+    {
+        player2.yCord = 120;
+    }
+    
+    if(position === 2)
+    {
+        player2.yCord = 220;
+    }
+    
+    if(position === 3)
+    {
+        player2.yCord = 320;
+    }
+};
+
+var bullet = function()
+{
+    for(var i in bullets){
+        //fill uses the color of the i'th bullet object
+        fill(bullets[i]);
+        
+        //ellipse uses it's coordinates
+        ellipse(bullets[i].x,bullets[i].y,25,5);
+        
+        //call the move function on the bull obj so it moves
+        moveBull(bullets[i]);
+    }
+};
+
+var keyPressed = function()
+{
+    // This group of code is the movement of both players
+    if(keyCode === 38) //if the player presses the up arrow key
+    {
+        if(player2.position===0) //this checks if the player is at the top platform 
+        {
+            player2.position=0; //this stops the player from going higher than the platform
+        }
+        else
+        {
+            player2.position--; //decrease the player's position but move the character up
+        }
+    }
+    
+    if(keyCode===40) //if the player pressed the down arrow key
+    {
+        if(player2.position===3) //this checks if the player is at the bottom platform
+        {
+            player2.position=3; //this stops the player from going lower than the platform
+        }
+        else
+        {
+            player2.position++; //increase the player's position but move the character down
+        }
+    }
+    
+    if(keyCode === 87) //if the player presses the W arrow key
+    {
+        if(player1.position===0) //this checks if the player is at the top platform 
+        {
+            player1.position=0; //this stops the player from going higher than the platform
+        }
+        else
+        {
+            player1.position--; //decrease the player's position but move the character up
+        }
+    }
+    
+    if(keyCode===83) //if the player pressed the S arrow key
+    {
+        if(player1.position===3) //this checks if the player is at the bottom platform
+        {
+            player1.position=3; //this stops the player from going lower than the platform
+        }
+        else
+        {
+            player1.position++; //increase the player's position but move the character down
+        }
+    }
+    
+    if(keyCode===68)//if the player pressed the D key
+    {
+        bullets.push({x:49,y:(player1.position*100)+49,speed:bullSpd});
+        bullet();
+    }
+    
+    if(keyCode===37)//if the player pressed the left arrow key
+    {
+        bullets.push({x:335,y:(player2.position*100)+49,speed:-bullSpd});
+        bullet();
+    }
+};
+//}
+
+//Functions that draw the start screen and bitmojis
+//{
+var drawBryanHead = function(headX,headY)
+{
+    noStroke();
+    //head
+    fill(217, 180, 139); //skin tone
+    ellipse(headX+100,headY+100,60,80);
+    //ears
+    ellipse(headX+75,headY+100,20,20);
+    ellipse(headX+125,headY+100,20,20);
+    //neck
+    rect(headX+87,headY+130,25,20);
+};
+
+var drawBryanFace = function(faceX,faceY)
+{
+    //eyes
+    fill(255,255,255);
+    ellipse(faceX+87,faceY+100,15,10);
+    ellipse(faceX+111,faceY+100,15,10);
+    fill(74, 64, 5); //iris color
+    ellipse(faceX+87,faceY+100,10,10);
+    ellipse(faceX+111,faceY+100,10,10);
+    //mouth
+    fill(0,0,0);
+    rect(faceX+90,faceY+120,20,1);
+};
+
+var drawBryanTop = function(topX,topY)
+{
+    //hair
+    fill(38, 26, 5);
+    rect(topX+71,topY+72,5,20);
+    rect(topX+123,topY+72,5,20);
+    //hat
+    fill(0, 0, 0); //hat color
+    ellipse(topX+100,topY+73,58,35);
+    ellipse(topX+100,topY+78,60,27);
+    fill(255, 255, 255); //for hat 
+    ellipse(topX+100,topY+66,10,10);
+};
+
+var drawBryanBody = function(bodyX,bodyY)
+{
+    //shirt
+    fill(8, 5, 79); //navy blue for shirt
+    rect(bodyX+70,bodyY+144,60,40);
+    fill(255, 255, 255);//text color
+    textSize(22);
+    text("BD",bodyX+100,bodyY+168);
+};
+
+var drawBryanBitmoji = function(bitmojiX,bitmojiY){
+    drawBryanHead(bitmojiX,bitmojiY);
+    drawBryanFace(bitmojiX,bitmojiY);
+    drawBryanTop(bitmojiX,bitmojiY);
+    drawBryanBody(bitmojiX,bitmojiY);
+    
+};
+
+var drawHaiBody = function(leX,leY,leH)
+{
+    stroke(0, 0, 0);
+    strokeWeight(2);
+
+    fill(252, 195, 165);
+    rect(leX+(leH/100*83),leY+(leH/100*120),(leH/100*35),(leH/100*50)); // neck
+
+    fill(0, 0, 0);
+    quad(leX+(leH/100*25),leY+(leH/100*200),leX+(leH/100*65),leY+(leH/100*167),leX+(leH/100*136),leY+(leH/100*167),leX+(leH/100*175),leY+(leH/100*200)); // torso
+
+    fill(252,195,165);
+    arc(leX+(leH/100*100),leY+(leH/100*147),(leH/100*99),(leH/100*55),45,135); // chest
+
+    line(leX+(leH/100*82),leY+(leH/100*156),leX+(leH/100*66),leY+(leH/100*166)); // left shoulder
+    line(leX+(leH/100*118),leY+(leH/100*156),leX+(leH/100*135),leY+(leH/100*166)); // right shoulder
+};
+
+var drawHaiHead = function(leX,leY,leH)
+{
+    fill(107, 107, 107);
+    arc(leX+(leH/100*100),leY+(leH/100*75),(leH/100*110),(leH/100*100),-181,2); // headphone band
+    arc(leX+(leH/100*48),leY+(leH/100*94),(leH/100*22),(leH/100*34),71,284); // left ear
+    arc(leX+(leH/100*152),leY+(leH/100*94),(leH/100*22),(leH/100*34),-114,112); // right ear
+
+    fill(0, 0, 0);
+    quad(leX+(leH/100*54),leY+(leH/100*64),leX+(leH/100*60),leY+(leH/100*29),leX+(leH/100*140),leY+(leH/100*29),leX+(leH/100*146),leY+(leH/100*64)); // base hair
+
+    fill(252, 195, 165);
+    ellipse(leX+(leH/100*100),leY+(leH/100*90),(leH/100*103),(leH/100*115)); // head
+
+    fill(0, 0, 0);
+    triangle(leX+(leH/100*60),leY+(leH/120*40),leX+(leH/100*125),leY+(leH/100*30),leX+(leH/100*125),leY+(leH/100*55)); // hair bangs
+
+    noFill();
+    arc(leX+(leH/100*100),leY+(leH/100*92),(leH/100*23),(leH/100*12),-57,245); // nose
+
+    fill(255, 255, 255);
+    ellipse(leX+(leH/100*80),leY+(leH/100*75),(leH/100*25),(leH/100*13)); // left eye
+    
+    fill(0, 0, 0);
+    ellipse(leX+(leH/100*80),leY+(leH/100*74),(leH/100*10),(leH/100*10)); // left pupil
+
+    line(leX+(leH/100*69),leY+(leH/100*61),leX+(leH/100*92),leY+(leH/100*62)); // left eyebrow
+
+    fill(255, 255, 255);
+    ellipse(leX+(leH/100*120),leY+(leH/100*75),(leH/100*25),(leH/100*13)); // right eye
+    
+    fill(0, 0, 0);
+    ellipse(leX+(leH/100*120),leY+(leH/100*74),(leH/100*10),(leH/100*10)); // right pupil
+
+    line(leX+(leH/100*109),leY+(leH/100*62),leX+(leH/100*132),leY+(leH/100*60)); // right eyebrow
+
+    noFill();
+    arc(leX+(leH/100*100),leY+(leH/100*65),(leH/100*125),(leH/100*100),70,110); // mouth
+
+    strokeWeight(3); // glasses
+    line(leX+(leH/100*65),leY+(leH/100*66),leX+(leH/100*95),leY+(leH/100*67)); // left top line
+    line(leX+(leH/100*65),leY+(leH/100*84),leX+(leH/100*95),leY+(leH/100*85)); // left bottom line
+    line(leX+(leH/100*65),leY+(leH/100*67),leX+(leH/100*65),leY+(leH/100*81)); // left left line
+    line(leX+(leH/100*95),leY+(leH/100*68),leX+(leH/100*95),leY+(leH/100*82)); // left right line
+
+    line(leX+(leH/100*105),leY+(leH/100*67),leX+(leH/100*135),leY+(leH/100*65)); // right top line
+    line(leX+(leH/100*105),leY+(leH/100*85),leX+(leH/100*135),leY+(leH/100*84)); // right bottom line
+    line(leX+(leH/100*105),leY+(leH/100*69),leX+(leH/100*105),leY+(leH/100*83)); // right left line
+    line(leX+(leH/100*135),leY+(leH/100*66),leX+(leH/100*135),leY+(leH/100*83)); // right right line
+
+    line(leX+(leH/100*55),leY+(leH/100*65),leX+(leH/100*65),leY+(leH/100*66)); // left leg
+    line(leX+(leH/100*145),leY+(leH/100*64),leX+(leH/100*135),leY+(leH/100*65)); // right leg
+    line(leX+(leH/100*95),leY+(leH/100*66),leX+(leH/100*105),leY+(leH/100*66)); // middle bridge leg
+};
+
+var drawHaiBitmoji = function(leX,leY,leH)
+{
+    drawHaiBody(leX,leY,leH);
+    drawHaiHead(leX,leY,leH);
+};
+
+var drawButton = function() 
+{
+    fill(81, 166, 31);
+    rect(160, 300, 66, 40);
+    fill(255, 255, 255);
+    textSize(16);
+    text("START", 193, 323);
+};
+
+var drawStartScreen = function()
+{
+    background(247, 190, 84);
+    drawHaiBitmoji(54,20,70);
+    drawBryanBitmoji(190,-20);
+    drawButton();
+    textSize(20);
+    textAlign(CENTER);
+    fill(55, 0, 255);
+    text("Hai Le and Bryan Denton Present...",200,25);
+    textSize(18);
+    text("Stick Game; a spin-off of the classic Duck Game",203,184);
+    text("Player 1 Controls:",100,210);
+    text("Player 2 Controls:",295,210);
+    text("W key - Up",100,240);
+    text("S key - Down",100,260);
+    text("D key - Shoot",100,280);
+    text("Up arrow key - Up",295,240);
+    text("Down arrow key - Down",295,260);
+    text("Left arrow key - Shoot",295,280);
+    textSize(16);
+    text("Click the start button on-screen to jump into the game!",200,370);
+};
+
+//function for clicking button
+mouseClicked = function(){
+    if(mouseX >= 160 && mouseX <=225 && mouseY <= 335 && mouseY >= 300)
+    {currentScene = 1;}
+};
+//}
+
+var draw = function()
+{
+    if(currentScene === 0)
+    {
+        drawStartScreen();
+    }
+    
+    if(currentScene === 1)
+    {
+        drawBackground();
+        drawPlatforms();
+        drawPlayer1(player1.yCord);
+        drawPlayer2(player2.yCord);
+        changePosition1(player1.position);
+        changePosition2(player2.position);
+        bullet();
+        healthBar();
+    }
+    fill(255, 26, 0);
+    textSize(25);
+    if(player1.health === 0)
+    {
+    text("Player 1 Died, Player 2 Wins!",200,150);
+    }
+    if(player2.health === 0)
+    {
+    text("Player 2 Died, Player 1 Wins!",200,150);
+    }
+};
