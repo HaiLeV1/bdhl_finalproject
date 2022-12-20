@@ -1,0 +1,78 @@
+var drawBody = function(leX,leY,leH)
+{
+    strokeWeight(2);
+
+    fill(252, 195, 165);
+    rect(leX+(leH/100*83),leY+(leH/100*120),(leH/100*35),(leH/100*50)); // neck
+
+    fill(0, 0, 0);
+    quad(leX+(leH/100*25),leY+(leH/100*200),leX+(leH/100*65),leY+(leH/100*167),leX+(leH/100*136),leY+(leH/100*167),leX+(leH/100*175),leY+(leH/100*200)); // torso
+
+    fill(252,195,165);
+    arc(leX+(leH/100*100),leY+(leH/100*147),(leH/100*99),(leH/100*55),45,135); // chest
+
+    line(leX+(leH/100*82),leY+(leH/100*156),leX+(leH/100*66),leY+(leH/100*166)); // left shoulder
+    line(leX+(leH/100*118),leY+(leH/100*156),leX+(leH/100*135),leY+(leH/100*166)); // right shoulder
+};
+
+var drawHead = function(leX,leY,leH)
+{
+    fill(107, 107, 107);
+    arc(leX+(leH/100*100),leY+(leH/100*75),(leH/100*110),(leH/100*100),-181,2); // headphone band
+    arc(leX+(leH/100*48),leY+(leH/100*94),(leH/100*22),(leH/100*34),71,284); // left ear
+    arc(leX+(leH/100*152),leY+(leH/100*94),(leH/100*22),(leH/100*34),-114,112); // right ear
+
+    fill(0, 0, 0);
+    quad(leX+(leH/100*54),leY+(leH/100*64),leX+(leH/100*60),leY+(leH/100*29),leX+(leH/100*140),leY+(leH/100*29),leX+(leH/100*146),leY+(leH/100*64)); // base hair
+
+    fill(252, 195, 165);
+    ellipse(leX+(leH/100*100),leY+(leH/100*90),(leH/100*103),(leH/100*115)); // head
+
+    fill(0, 0, 0);
+    triangle(leX+(leH/100*60),leY+(leH/120*40),leX+(leH/100*125),leY+(leH/100*30),leX+(leH/100*125),leY+(leH/100*55)); // hair bangs
+
+    noFill();
+    arc(leX+(leH/100*100),leY+(leH/100*92),(leH/100*23),(leH/100*12),-57,245); // nose
+
+    fill(255, 255, 255);
+    ellipse(leX+(leH/100*80),leY+(leH/100*75),(leH/100*25),(leH/100*13)); // left eye
+    
+    fill(0, 0, 0);
+    ellipse(leX+(leH/100*80),leY+(leH/100*74),(leH/100*10),(leH/100*10)); // left pupil
+
+    line(leX+(leH/100*69),leY+(leH/100*61),leX+(leH/100*92),leY+(leH/100*62)); // left eyebrow
+
+    fill(255, 255, 255);
+    ellipse(leX+(leH/100*120),leY+(leH/100*75),(leH/100*25),(leH/100*13)); // right eye
+    
+    fill(0, 0, 0);
+    ellipse(leX+(leH/100*120),leY+(leH/100*74),(leH/100*10),(leH/100*10)); // right pupil
+
+    line(leX+(leH/100*109),leY+(leH/100*62),leX+(leH/100*132),leY+(leH/100*60)); // right eyebrow
+
+    noFill();
+    arc(leX+(leH/100*100),leY+(leH/100*65),(leH/100*125),(leH/100*100),70,110); // mouth
+
+    strokeWeight(3); // glasses
+    line(leX+(leH/100*65),leY+(leH/100*66),leX+(leH/100*95),leY+(leH/100*67)); // left top line
+    line(leX+(leH/100*65),leY+(leH/100*84),leX+(leH/100*95),leY+(leH/100*85)); // left bottom line
+    line(leX+(leH/100*65),leY+(leH/100*67),leX+(leH/100*65),leY+(leH/100*81)); // left left line
+    line(leX+(leH/100*95),leY+(leH/100*68),leX+(leH/100*95),leY+(leH/100*82)); // left right line
+
+    line(leX+(leH/100*105),leY+(leH/100*67),leX+(leH/100*135),leY+(leH/100*65)); // right top line
+    line(leX+(leH/100*105),leY+(leH/100*85),leX+(leH/100*135),leY+(leH/100*84)); // right bottom line
+    line(leX+(leH/100*105),leY+(leH/100*69),leX+(leH/100*105),leY+(leH/100*83)); // right left line
+    line(leX+(leH/100*135),leY+(leH/100*66),leX+(leH/100*135),leY+(leH/100*83)); // right right line
+
+    line(leX+(leH/100*55),leY+(leH/100*65),leX+(leH/100*65),leY+(leH/100*66)); // left leg
+    line(leX+(leH/100*145),leY+(leH/100*64),leX+(leH/100*135),leY+(leH/100*65)); // right leg
+    line(leX+(leH/100*95),leY+(leH/100*66),leX+(leH/100*105),leY+(leH/100*66)); // middle bridge leg
+};
+
+var drawBitmoji = function(leX,leY,leH)
+{
+    drawBody(leX,leY,leH);
+    drawHead(leX,leY,leH);
+};
+
+drawBitmoji(0,0,100);
