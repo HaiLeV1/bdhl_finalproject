@@ -1,0 +1,130 @@
+var player1 = {
+    health: 5,
+    position:round(random(0.5,4.4)),
+    yCord:0
+}; //Player 1 & its objects
+
+var player2 = {
+    health:5,
+    position:round(random(0.5,4.4)),
+    yCord:0
+}; //Player 2 & its objects
+
+// Functions that draw the sprite
+{
+var drawSprite = function(y)
+{ //draws the stickman sprite
+    noFill();
+    stroke(255, 185, 0);
+    strokeWeight(3);
+    ellipse(15,y+15,25,25); //head
+    line(15,y+28,15,y+50); //body
+    line(16,y+32,32,y+32); //gun arm
+    line(16,y+32,3,y+45); //other arm
+    line(16,y+50,22,y+70); //leg
+    line(15,y+50,9,y+70); //other leg
+};
+
+var drawGun = function(y)
+{ //draws the gun sprite
+    noStroke();
+    fill(0, 0, 0);
+    rect(32,y+28,3,10); //gun handle
+    fill(120, 120, 120);
+    rect(33,y+26,15,6); //gun barrel
+};
+
+var drawPlayer = function(y)
+{
+    drawSprite(y); //draws the sprite
+    drawGun(y); //draws the gun
+};
+}
+
+// Functions that draw the map
+{
+var drawBackground = function()
+{
+    background(165, 245, 255);
+    fill(120, 80, 40);
+    rect(-1,325,width+2,100);
+    fill(20, 120, 0);
+    rect(-1,304, width+2, 30);
+};
+
+var drawPlatforms = function()
+{
+    noStroke();
+    fill(255, 0, 0);
+    for(var i = 0; i<4; i++)
+    {
+        rect(0,(i*100)+90,50,10);
+    }
+};
+}
+
+var changePosition = function(position)
+{
+    if(position === 1)
+    {
+        player1.yCord = 20;
+    }
+    
+    if(position === 2)
+    {
+        player1.yCord = 120;
+    }
+    
+    if(position === 3)
+    {
+        player1.yCord = 220;
+    }
+    
+    if(position === 4)
+    {
+        player1.yCord = 320;
+    }
+};
+
+var keyPressed = function()
+{
+    { // This group of code is the movement of both players
+    if(keyCode === 38) //if the player presses the up arrow key
+    {
+        if(player1.position===1) //this checks if the player is at the top platform 
+        {
+            player1.position=1; //this stops the player from going higher than the platform
+        }
+        else
+        {
+            player1.position--; //decrease the player's position but move the character up
+        }
+    }
+    
+    if(keyCode===40) //if the player pressed the down arrow key
+    {
+        if(player1.position===4) //this checks if the player is at the bottom platform
+        {
+            player1.position=4; //this stops the player from going lower than the platform
+        }
+        else
+        {
+            player1.position++; //increase the player's position but move the character down
+        }
+    }
+    }
+    {
+    if(keyCode===32)//if the player pressed the space key
+    {
+        println("test");
+    }
+    }
+};
+
+var draw = function()
+{
+    drawBackground();
+    drawPlatforms();
+    drawPlayer(player1.yCord);
+    changePosition(player1.position);
+};
