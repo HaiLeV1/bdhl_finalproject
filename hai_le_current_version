@@ -1,18 +1,33 @@
 var player1 = {
     health: 5,
-    position:round(random(0.5,4.4)),
+    position:round(random(0.4,3.4)),
     yCord:0
 }; //Player 1 & its objects
 
 var player2 = {
     health:5,
-    position:round(random(0.5,4.4)),
+    position:round(random(0.4,3.4)),
     yCord:0
 }; //Player 2 & its objects
 
+var bullets = [];
+var bullSpd = 3;
+var moveBull = function(bull)
+{
+    //this function takes in a bullet object and moves it by updating the .x property with      the .speed
+    bull.x+=bull.speed;
+    println(bull.x);
+    if (bull.x > 355 )
+        {
+            bull.x = 500;
+        }
+};
+
 // Functions that draw the sprite
 {
-var drawSprite = function(y)
+// Draws player 1
+{
+var drawSprite1 = function(y)
 { //draws the stickman sprite
     noFill();
     stroke(255, 185, 0);
@@ -25,7 +40,7 @@ var drawSprite = function(y)
     line(15,y+50,9,y+70); //other leg
 };
 
-var drawGun = function(y)
+var drawGun1 = function(y)
 { //draws the gun sprite
     noStroke();
     fill(0, 0, 0);
@@ -34,11 +49,43 @@ var drawGun = function(y)
     rect(33,y+26,15,6); //gun barrel
 };
 
-var drawPlayer = function(y)
+var drawPlayer1 = function(y)
 {
-    drawSprite(y); //draws the sprite
-    drawGun(y); //draws the gun
+    drawSprite1(y); //draws the sprite
+    drawGun1(y); //draws the gun
 };
+}
+
+// Draws player 2
+{
+var drawSprite2 = function(y)
+{ //draws the stickman sprite
+    noFill();
+    stroke(255, 185, 0);
+    strokeWeight(3);
+    ellipse(375,y+15,25,25); //head
+    line(375,y+28,375,y+50); //body
+    line(376,y+32,358,y+32); //gun arm
+    line(376,y+32,387,y+45); //other arm
+    line(376,y+50,382,y+70); //leg
+    line(375,y+50,367,y+70); //other leg
+};
+
+var drawGun2 = function(y)
+{ //draws the gun sprite
+    noStroke();
+    fill(0, 0, 0);
+    rect(356,y+28,3,10); //gun handle
+    fill(120, 120, 120);
+    rect(342,y+26,15,6); //gun barrel
+};
+
+var drawPlayer2 = function(y)
+{
+    drawSprite2(y); //draws the sprite
+    drawGun2(y); //draws the gun
+};
+}
 }
 
 // Functions that draw the map
@@ -60,40 +107,105 @@ var drawPlatforms = function()
     {
         rect(0,(i*100)+90,50,10);
     }
+    for(var i = 0; i<4; i++)
+    {
+        rect(350,(i*100)+90,50,10);
+    }
 };
 }
 
-var changePosition = function(position)
+var changePosition1 = function(position)
 {
-    if(position === 1)
+    if(position === 0)
     {
         player1.yCord = 20;
     }
     
-    if(position === 2)
+    if(position === 1)
     {
         player1.yCord = 120;
     }
     
-    if(position === 3)
+    if(position === 2)
     {
         player1.yCord = 220;
     }
     
-    if(position === 4)
+    if(position === 3)
     {
         player1.yCord = 320;
     }
 };
 
+var changePosition2 = function(position)
+{
+    if(position === 0)
+    {
+        player2.yCord = 20;
+    }
+    
+    if(position === 1)
+    {
+        player2.yCord = 120;
+    }
+    
+    if(position === 2)
+    {
+        player2.yCord = 220;
+    }
+    
+    if(position === 3)
+    {
+        player2.yCord = 320;
+    }
+};
+
+var bullet = function()
+{
+    for(var i in bullets){
+        //fill uses the color of the i'th bullet object
+        fill(bullets[i]);
+        
+        //ellipse uses it's coordinates
+        ellipse(bullets[i].x,bullets[i].y,25,5);
+        
+        //call the move function on the bull obj so it moves
+        moveBull(bullets[i]);
+    }
+};
+
 var keyPressed = function()
 {
-    { // This group of code is the movement of both players
+    // This group of code is the movement of both players
     if(keyCode === 38) //if the player presses the up arrow key
     {
-        if(player1.position===1) //this checks if the player is at the top platform 
+        if(player2.position===0) //this checks if the player is at the top platform 
         {
-            player1.position=1; //this stops the player from going higher than the platform
+            player2.position=0; //this stops the player from going higher than the platform
+        }
+        else
+        {
+            player2.position--; //decrease the player's position but move the character up
+        }
+    }
+    
+    if(keyCode===40) //if the player pressed the down arrow key
+    {
+        if(player2.position===3) //this checks if the player is at the bottom platform
+        {
+            player2.position=3; //this stops the player from going lower than the platform
+        }
+        else
+        {
+            player2.position++; //increase the player's position but move the character down
+        }
+    }
+    
+    if(keyCode === 87) //if the player presses the W arrow key
+    {
+        if(player1.position===0) //this checks if the player is at the top platform 
+        {
+            player1.position=0; //this stops the player from going higher than the platform
         }
         else
         {
@@ -101,23 +213,28 @@ var keyPressed = function()
         }
     }
     
-    if(keyCode===40) //if the player pressed the down arrow key
+    if(keyCode===83) //if the player pressed the S arrow key
     {
-        if(player1.position===4) //this checks if the player is at the bottom platform
+        if(player1.position===3) //this checks if the player is at the bottom platform
         {
-            player1.position=4; //this stops the player from going lower than the platform
+            player1.position=3; //this stops the player from going lower than the platform
         }
         else
         {
             player1.position++; //increase the player's position but move the character down
         }
     }
-    }
+    
+    if(keyCode===68)//if the player pressed the D key
     {
-    if(keyCode===32)//if the player pressed the space key
-    {
-        println("test");
+        bullets.push({x:49,y:(player1.position*100)+49,speed:bullSpd});
+        bullet();
     }
+    
+    if(keyCode===37)//if the player pressed the left arrow key
+    {
+        bullets.push({x:335,y:(player2.position*100)+49,speed:-bullSpd});
+        bullet();
     }
 };
 
@@ -125,6 +242,10 @@ var draw = function()
 {
     drawBackground();
     drawPlatforms();
-    drawPlayer(player1.yCord);
-    changePosition(player1.position);
+    drawPlayer1(player1.yCord);
+    drawPlayer2(player2.yCord);
+    changePosition1(player1.position);
+    changePosition2(player2.position);
+    bullet();
+    ellipse(355,49,5,5);
 };
