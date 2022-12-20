@@ -1,4 +1,4 @@
-var currentScene =0; //splash screen 0, game 1
+var currentScene=0; //splash screen 0, game 1
 var player1 = {
     health: 5,
     position:round(random(0.4,3.4)),
@@ -17,12 +17,48 @@ var moveBull = function(bull)
 {
     //this function takes in a bullet object and moves it by updating the .x property with      the .speed
     bull.x+=bull.speed;
-    println(bull.x);
-    if (bull.x > 355 )
-        {
-            bull.x = 500;
-        }
+    
+    // hit registration
+    if (bull.x > 355 && player2.position === player1.position)
+    {
+        bull.x = 200;
+        bull.y=-5;
+        bull.speed = 0;
+        player2.health--;
+    }
+    else if (bull.x > 405)
+    {
+        bull.x=500;
+        bull.speed=0;
+    }
+    
+    if (bull.x < 35 && player1.position === player2.position)
+    {
+        bull.x = 200;
+        bull.y=-5;
+        bull.speed = 0;
+        player1.health--;
+    }
+    else if (bull.x < -5)
+    {
+        bull.x=500;
+        bull.speed=0;
+    }
 };
+
+var healthBar = function()
+{
+    for (var i=0; i<player1.health; i++) // shows player 1's health
+    {
+        image(getImage("cute/Heart"), 1 + i*30,0,25,25);
+    }
+    
+    for (var j=0; j<player2.health; j++) // shows player 2's health
+    {
+        image(getImage("cute/Heart"), 251 + j*30,0,25,25);
+    }
+};
+
 
 // Functions that draw the sprite
 {
@@ -229,6 +265,7 @@ var drawButton = function() {
 };
 
 var drawStartScreen = function(){
+currentScene = 0;
 background(247, 190, 84);
 drawHaiBitmoji(54,20,70);
 drawBryanBitmoji(190,-20);
@@ -256,6 +293,7 @@ mouseClicked = function(){
     {currentScene = 1;}
 
 };
+
 // Functions that draw the map
 {
 var drawGameBackground = function()
@@ -418,6 +456,13 @@ if(currentScene === 1){
     drawPlayer2(player2.yCord);
     changePosition1(player1.position);
     changePosition2(player2.position);
+    healthBar();
     bullet();
     ellipse(355,49,5,5);}
+fill(255, 26, 0);
+textSize(25);
+if(player1.health === 0){
+text("Player 1 Died, Player 2 Wins!",200,150);}
+if(player2.health === 0){
+text("Player 2 Died, Player 1 Wins!",200,150);}
 };
